@@ -14,7 +14,7 @@ class bd
     public function connection()
     {
         $str_conn = $this->bd_tipo . ":host=" . $this->bd_host .
-        ";dbname=" . $this->bd_nome . ";port=" . $this->bd_porta;
+            ";dbname=" . $this->bd_nome . ";port=" . $this->bd_porta;
 
         return new PDO(
             $str_conn,
@@ -24,32 +24,33 @@ class bd
         );
     }
 
-    public function select()
+    public function select($nome_tabela)
     {
         $conn = $this->connection();
 
-        $stmt = $conn->prepare("SELECT * FROM tb_usuario");
+        $stmt = $conn->prepare("SELECT * FROM $nome_tabela");
 
         $stmt->execute();
 
         return $stmt;
     }
 
-    public function find($id)
+    public function find($nome_tabela, $id)
     {
         $conn = $this->connection();
 
-        $stmt = $conn->prepare("SELECT * FROM tb_usuario WHERE id = ?;");
+        $stmt = $conn->prepare("SELECT * FROM $nome_tabela WHERE id = ?;");
 
         $stmt->execute([$id]);
 
         return $stmt->fetchObject();
     }
 
-    public function update($dados)
+    //UPDATE `tb_usuario` SET `nome`='Lucas', `telefone`='49 8899-8800', `cpf`='000.555.999-55' WHERE  `id`=5;
+    public function update($nome_tabela, $dados)
     {
         $id = $dados['id'];
-        $sql = "UPDATE tb_usuario SET";
+        $sql = "UPDATE $nome_tabela SET ";
 
         $flag = 0;
         $arrayValor = [];
@@ -58,14 +59,16 @@ class bd
             if ($flag == 0) {
                 $sql .= " $campo = ?";
             } else {
-                $sql .= ",  $campo = ?";
+                $sql .= ", $campo = ?";
             }
             $flag = 1;
             $arrayValor[] = $valor;
         }
 
-        $sql .= "WHERE id = $id;";
+        $sql .= " WHERE id = $id;";
+
         $conn = $this->connection();
+
         $stmt = $conn->prepare($sql);
 
         $stmt->execute($arrayValor);
@@ -73,10 +76,22 @@ class bd
         return $stmt;
     }
 
-    public function insert($dados)
+    public function insert($nome_tabela, $dados)
     {
-        unset($dados['id']);
-        $sql = "INSERT INTO tb_usuario (nome, telefone, cpf) VALUES (";
+        unset($dados['id']); //remove o atributo id do vetor
+        $sql = "INSERT INTO $nome_tabela (";
+
+        $flag = 0;
+        foreach ($dados as $campo => $valor) {
+
+            if ($flag == 0) {
+                $sql .= " $campo";
+            } else {
+                $sql .= ", $campo";
+            }
+            $flag = 1;
+        }
+        $sql .= ") VALUES (";
 
         $flag = 0;
         $arrayValor = [];
@@ -92,6 +107,7 @@ class bd
         }
         $sql .= ");";
         $conn = $this->connection();
+
         $stmt = $conn->prepare($sql);
 
         $stmt->execute($arrayValor);
@@ -99,23 +115,23 @@ class bd
         return $stmt;
     }
 
-    public function remove($id)
+    public function remove($nome_tabela, $id)
     {
         $conn = $this->connection();
 
-        $stmt = $conn->prepare("DELETE FROM tb_usuario WHERE id = ?;");
+        $stmt = $conn->prepare("DELETE FROM $nome_tabela WHERE id = ?;");
 
         $stmt->execute([$id]);
 
         return $stmt;
     }
 
-    public function search($dados)
+    public function search($nome_tabela, $dados)
     {
         $conn = $this->connection();
         $campo = $dados['tipo'];
 
-        $stmt = $conn->prepare("SELECT * FROM tb_usuario WHERE $campo like ?;");
+        $stmt = $conn->prepare("SELECT * FROM $nome_tabela WHERE $campo like ?;");
 
         $stmt->execute(["%" . $dados['valor'] . "%"]);
 

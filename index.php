@@ -1,17 +1,20 @@
 <?php
-include "./screens/head.php"
+include "./screens/head.php";
 ?>
 
-<h4>Telas</h4>
-   
+
+<H4>Telas</H4>
 <div class="card" style="width: 18rem;">
-  <img class="card-img-top" styles="max-width: 137px; margin-left: 74px; margin-top: 19px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Santos_logo.svg/1045px-Santos_logo.svg.png" alt="Imagem de capa do card">
-  <div class="card-body">
-    <h5 class="card-title">Título do card</h5>
-    <p class="card-text">Listagem</p>
-    <a href="./screens/UsuarioList.php" class="btn btn-primary">Ver</a>
-  </div>
+    <img class="card-img-top" style="max-width: 140px;margin-left: 72px;"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTFHi1tfpZag3I3e9LC5L7CzUDaTPuZyHayA&usqp=CAU"
+        alt="Imagem de capa do card">
+    <div class="card-body">
+        <h5 class="card-title">Usuário</h5>
+        <p class="card-text">Gerenciar Usuários do sistema</p>
+        <a href="./screens/UsuarioList.php" class="btn btn-primary"><i class="fas fa-address-card"></i> Ver</a>
+    </div>
 </div>
-    <?php
-include "./screens/footer.php"
+
+<?php
+include "./screens/footer.php";
 ?>
