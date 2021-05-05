@@ -11,6 +11,7 @@ if (!empty($_POST['nome'])) {
     if (!empty($_POST['id'])) {
         $objBD->update($tabela, $_POST);
     } else {
+
         $objBD->insert($tabela, $_POST);
     }
 
@@ -23,6 +24,7 @@ if (!empty($_POST['nome'])) {
 <?php
 include "./head.php";
 ?>
+<br />
 <h3>Formulário Usuário</h3>
 
 <form action="UsuarioForm.php" method="post">
@@ -47,6 +49,18 @@ include "./head.php";
                 placeholder="(84) 98800-5500)"><br>
         </div>
         <div class="form-group col-md-3">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email" class="form-control"
+                value="<?php echo !empty($result->email) ? $result->email : "" ?>" required
+                placeholder="exemplo@gmail.com"><br>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="data_nascimento">Data Nascimento</label>
+            <input type="date" name="data_nascimento" id="data_nascimento" class="form-control"
+                value="<?php echo !empty($result->data_nascimento) ? $result->data_nascimento : "" ?>" required
+                placeholder="00/00/2000"><br>
+        </div>
+        <div class="form-group col-md-3">
             <label for="categoria_id">Categoria</label>
             <select class="custom-select" id="categoria_id" name="categoria_id">
                 <?php
@@ -56,6 +70,41 @@ include "./head.php";
                     $selected = $item->id === $result->categoria_id ? "selected" : "";
 
                     echo " <option value=" . $item->id . " $selected>" . $item->nome . "</option>";
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <blockquote class="blockquote">
+        <p class="mb-0">Credenciais do Login</p>
+        <br>
+    </blockquote>
+
+    <div class="form-row">
+
+        <div class="form-group col-md-3">
+            <label for="usuario">Usuario</label>
+            <input type="usuario" name="usuario" id="usuario" class="form-control"
+                value="<?php echo !empty($result->usuario) ? $result->usuario : "" ?>" required
+                placeholder="Usuario"><br>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" id="data_nascimentosenha" class="form-control"
+                value="<?php echo !empty($result->senha) ? $result->senha : "" ?>" required placeholder="Senha"><br>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="ativo"> Habilitar/Desabilitar</label>
+            <select class="custom-select" id="ativo" name="ativo">
+                <?php
+
+                $ativo = [0 => "Inativo", 1 => "Ativado"];
+                foreach ($ativo as $chave => $item) {
+
+                    $selected = !empty($result->ativo) ? "selected" : "";
+
+                    echo " <option value=" . $chave . " $selected>" . $item . "</option>";
                 }
                 ?>
             </select>
